@@ -55,4 +55,33 @@ SELECT *
 FROM `bigquery-public-data.census_bureau_usa.population_by_zip_2000`
 WHERE minimum_age IS NOT NULL
 ORDER BY minimum_age DESC
-LIMIT 1000;    
+LIMIT 1000; 
+
+-- Kết hợp lọc và sắp xếp dữ liệu
+SELECT *
+FROM `bigquery-public-data.census_bureau_usa.population_by_zip_2000`
+WHERE minimum_age IS NOT NULL
+ORDER BY minimum_age DESC, population DESC
+LIMIT 1000;
+
+-- Truy vấn dữ liệu NOAA
+SELECT stn, date, IF( temp=9999.9, NULL, temp) AS temperature, 
+ IF( wdsp="999.9", NULL, CAST(wdsp AS Float64)) AS wind_speed, 
+ IF( prcp=99.99, 0, prcp) AS precipitation 
+FROM
+ `bigquery-public-data.noaa_gsod.gsod2020` 
+WHERE
+ stn="725030" 
+ OR stn="744860" 
+ORDER BY
+ date DESC, stn ASC
+
+--  Truy vấn bảng mới
+SELECT
+ AVG(temperature) 
+FROM
+`khang635.demos.nyc_weather`
+WHERE
+ date BETWEEN '2020-06-01' AND '2020-06-30'
+
+
